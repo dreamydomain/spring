@@ -1,0 +1,6 @@
+server:
+  port: 8080
+spring:
+  data:
+    mongodb:
+      uri: mongodb+srv://horace:Super123@cluster0.zrgqp.azure.mongodb.net/spring?retryWrites=true&w=majority
