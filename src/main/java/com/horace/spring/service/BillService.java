@@ -1,6 +1,6 @@
 package com.horace.spring.service;
 
-import com.horace.spring.model.Bill;
+import com.horace.spring.model.mongo.Bill;
 import com.horace.spring.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 
