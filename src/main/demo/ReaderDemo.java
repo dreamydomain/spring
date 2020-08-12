@@ -6,8 +6,8 @@ public class ReaderDemo {
     public static void main(String[] args) throws IOException {
         File txtFile = new File("e:/a.txt");
         InputStream is = new FileInputStream(txtFile);
-        InputStreamReader read = new InputStreamReader(is, "UTF-8");
-        BufferedReader bufferedReader = new BufferedReader(read);
+        InputStreamReader reader = new InputStreamReader(is, "UTF-8");
+        BufferedReader bufferedReader = new BufferedReader(reader);
         String lineTxt;
         StringBuilder outString = new StringBuilder();
         while ((lineTxt = bufferedReader.readLine()) != null) {
@@ -21,13 +21,14 @@ public class ReaderDemo {
             }
         }
         bufferedReader.close();
-        read.close();
+        reader.close();
         is.close();
         //out file
         File outFile = new File("e:/b.txt");
-        if (!outFile.exists()) {
-            outFile.createNewFile();
+        if (outFile.exists()) {
+            outFile.delete();
         }
+        outFile.createNewFile();
         FileWriter fileWriter = new FileWriter(outFile.getAbsoluteFile());
         BufferedWriter bw = new BufferedWriter(fileWriter);
         bw.write(outString.toString());
