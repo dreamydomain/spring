@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class KOSSTest1 {
     public static void main(String[] args) throws Exception {
-        testG1();
+        testG3();
     }
 
     private static void testG1() throws Exception {
@@ -25,7 +25,7 @@ public class KOSSTest1 {
         state.close();
         conn.close();
 
-        String sql2 = "select * from (select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id) as tb where count_num > 1 and userid in (" + inSql + ")";
+        String sql2 = "select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id having count_num > 1 and userid in (" + inSql + ")";
         for (int i = 1; i <= 400; i++) {
             String db = "koss" + i;
             Connection connDB2 = DriverManager.getConnection("jdbc:postgresql://c7-db.koss.leandev.cn:5432/" + db, "postgres", "postgres");
@@ -65,7 +65,7 @@ public class KOSSTest1 {
         state.close();
         conn.close();
 
-        String sql2 = "select * from (select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id) as tb where count_num > 1 and userid in (" + inSql + ")";
+        String sql2 = "select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id having count_num > 1 and userid in (" + inSql + ")";
         for (int i = 201; i <= 400; i++) {
             String db = "koss" + i;
             Connection connDB2 = DriverManager.getConnection("jdbc:postgresql://c7-db2.koss.leandev.cn:5432/" + db, "postgres", "postgres");
