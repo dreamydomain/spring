@@ -1,3 +1,4 @@
+import com.horace.spring.common.utils.StringUtil;
 import org.apache.logging.log4j.util.Strings;
 
 import java.sql.Connection;
@@ -28,11 +29,15 @@ public class KOSSTest1 {
         String sql2 = "select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id having count(1) > 1 and userid in (" + inSql + ")";
         for (int i = 1; i <= 400; i++) {
             String db = "koss" + i;
+            if (db.equalsIgnoreCase("koss25")) {
+                continue;
+            }
             System.out.println(db);
             Connection connDB2 = DriverManager.getConnection("jdbc:postgresql://c7-db.koss.leandev.cn:5432/" + db, "postgres", "postgres");
             Statement state2 = connDB2.createStatement();
             ResultSet rs2 = state2.executeQuery(sql2);
             int resultIndex = 0;
+            String inSettingIds = "";
             while (rs2.next()) {
                 if (resultIndex == 0) {
                     System.out.println("userid | companyid | num ");
@@ -42,6 +47,23 @@ public class KOSSTest1 {
                 long col03 = rs2.getLong(3);
                 System.out.println(col01 + " | " + col02 + " | " + col03);
                 resultIndex++;
+                Statement stateIds = connDB2.createStatement();
+                ResultSet ids = stateIds.executeQuery("select id from ManagedCompanySetting where userid = " + col01 + " and company_id = " + col02);
+                int idsInt = 0;
+                while (ids.next()) {
+                    if (idsInt > 0) {
+                        inSettingIds += (ids.getLong(1) + ",");
+                    }
+                    idsInt++;
+                }
+                ids.close();
+                stateIds.close();
+            }
+            if (StringUtil.isNotNullOrEmpty(inSettingIds) && inSettingIds.endsWith(",")) {
+                System.out.println(inSettingIds);
+                inSettingIds = inSettingIds.substring(0, inSettingIds.length() - 1);
+                Statement deleteSTMT = connDB2.createStatement();
+                deleteSTMT.execute("delete from ManagedCompanySetting where id in (" + inSettingIds + ")");
             }
             System.out.println("---------------------------------------------");
             rs2.close();
@@ -52,7 +74,6 @@ public class KOSSTest1 {
 
     private static void testG3() throws Exception {
         Class.forName("org.postgresql.Driver");
-
         Connection conn = DriverManager.getConnection("jdbc:postgresql://c7-db.koss.leandev.cn:5432/kossadmin", "postgres", "postgres");
         Statement state = conn.createStatement();
         ResultSet rs = state.executeQuery("select id from users where serverinstance = 'g3'");
@@ -73,6 +94,7 @@ public class KOSSTest1 {
             Statement state2 = connDB2.createStatement();
             ResultSet rs2 = state2.executeQuery(sql2);
             int resultIndex = 0;
+            String inSettingIds = "";
             while (rs2.next()) {
                 if (resultIndex == 0) {
                     System.out.println("userid | companyid | num ");
@@ -82,6 +104,23 @@ public class KOSSTest1 {
                 long col03 = rs2.getLong(3);
                 System.out.println(col01 + " | " + col02 + " | " + col03);
                 resultIndex++;
+                Statement stateIds = connDB2.createStatement();
+                ResultSet ids = stateIds.executeQuery("select id from ManagedCompanySetting where userid = " + col01 + " and company_id = " + col02);
+                int idsInt = 0;
+                while (ids.next()) {
+                    if (idsInt > 0) {
+                        inSettingIds += (ids.getLong(1) + ",");
+                    }
+                    idsInt++;
+                }
+                ids.close();
+                stateIds.close();
+            }
+            if (StringUtil.isNotNullOrEmpty(inSettingIds) && inSettingIds.endsWith(",")) {
+                System.out.println(inSettingIds);
+                inSettingIds = inSettingIds.substring(0, inSettingIds.length() - 1);
+                Statement deleteSTMT = connDB2.createStatement();
+                deleteSTMT.execute("delete from ManagedCompanySetting where id in (" + inSettingIds + ")");
             }
             System.out.println("---------------------------------------------");
             rs2.close();
