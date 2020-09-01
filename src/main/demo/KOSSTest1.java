@@ -28,10 +28,10 @@ public class KOSSTest1 {
 
         String sql2 = "select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id having count(1) > 1 and userid in (" + inSql + ")";
         for (int i = 1; i <= 400; i++) {
-            String db = "koss" + i;
-            if (db.equalsIgnoreCase("koss25")) {
+            if (i == 25 || (i >= 57 && i <= 60)) {
                 continue;
             }
+            String db = "koss" + i;
             System.out.println(db);
             Connection connDB2 = DriverManager.getConnection("jdbc:postgresql://c7-db.koss.leandev.cn:5432/" + db, "postgres", "postgres");
             Statement state2 = connDB2.createStatement();
