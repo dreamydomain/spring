@@ -8,25 +8,12 @@ import java.sql.Statement;
 
 public class KOSSTest1 {
     public static void main(String[] args) throws Exception {
-        testG2();
+        testG3();
     }
 
     private static void testG1() throws Exception {
         Class.forName("org.postgresql.Driver");
-
-        Connection conn = DriverManager.getConnection("jdbc:postgresql://c7-db.koss.leandev.cn:5432/kossadmin", "postgres", "postgres");
-        Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery("select id from users where serverinstance = 'g1'");
-        StringBuilder inIds = new StringBuilder(Strings.EMPTY);
-        while (rs.next()) {
-            inIds.append(rs.getLong(1)).append(",");
-        }
-        String inSql = inIds.substring(0, inIds.length() - 1);
-        rs.close();
-        state.close();
-        conn.close();
-
-        String sql2 = "select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id having count(1) > 1 and userid in (" + inSql + ")";
+        String sql2 = "select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id having count(1) > 1";
         for (int i = 1; i <= 400; i++) {
             if (i == 25 || (i >= 57 && i <= 60)) {
                 continue;
@@ -46,7 +33,6 @@ public class KOSSTest1 {
                 long col02 = rs2.getLong(2);
                 long col03 = rs2.getLong(3);
                 System.out.println(col01 + " | " + col02 + " | " + col03);
-                resultIndex++;
                 Statement stateIds = connDB2.createStatement();
                 ResultSet ids = stateIds.executeQuery("select id from ManagedCompanySetting where userid = " + col01 + " and company_id = " + col02);
                 int idsInt = 0;
@@ -58,17 +44,17 @@ public class KOSSTest1 {
                 }
                 ids.close();
                 stateIds.close();
+                resultIndex++;
             }
-            if (StringUtil.isNotNullOrEmpty(inSettingIds) && inSettingIds.endsWith(",")) {
-                System.out.println(inSettingIds);
-                inSettingIds = inSettingIds.substring(0, inSettingIds.length() - 1);
-                Statement deleteSTMT = connDB2.createStatement();
-                deleteSTMT.execute("delete from ManagedCompanySetting where id in (" + inSettingIds + ")");
+            if (StringUtil.isNotNullOrEmpty(inSettingIds)) {
+                String delSql = "delete from ManagedCompanySetting where id in (" + inSettingIds.substring(0, inSettingIds.length() - 1) + ")";
+                System.out.println(delSql);
+                connDB2.createStatement().execute(delSql);
             }
-            System.out.println("---------------------------------------------");
             rs2.close();
             state2.close();
             connDB2.close();
+            System.out.println("---------------------------------------------");
         }
     }
 
@@ -96,9 +82,8 @@ public class KOSSTest1 {
             ids.close();
             stateIds.close();
         }
-        if (StringUtil.isNotNullOrEmpty(inSettingIds) && inSettingIds.endsWith(",")) {
-            inSettingIds = inSettingIds.substring(0, inSettingIds.length() - 1);
-            String delSql = "delete from ManagedCompanySetting where id in (" + inSettingIds + ")";
+        if (StringUtil.isNotNullOrEmpty(inSettingIds)) {
+            String delSql = "delete from ManagedCompanySetting where id in (" + inSettingIds.substring(0, inSettingIds.length() - 1) + ")";
             System.out.println(delSql);
             connDB2.createStatement().execute(delSql);
         }
@@ -109,19 +94,7 @@ public class KOSSTest1 {
 
     private static void testG3() throws Exception {
         Class.forName("org.postgresql.Driver");
-        Connection conn = DriverManager.getConnection("jdbc:postgresql://c7-db.koss.leandev.cn:5432/kossadmin", "postgres", "postgres");
-        Statement state = conn.createStatement();
-        ResultSet rs = state.executeQuery("select id from users where serverinstance = 'g3'");
-        StringBuilder inIds = new StringBuilder(Strings.EMPTY);
-        while (rs.next()) {
-            inIds.append(rs.getLong(1)).append(",");
-        }
-        String inSql = inIds.substring(0, inIds.length() - 1);
-        rs.close();
-        state.close();
-        conn.close();
-
-        String sql2 = "select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id having count(1) > 1 and userid in (" + inSql + ")";
+        String sql2 = "select userid,company_id,count(1) as count_num from ManagedCompanySetting GROUP BY userid,company_id having count(1) > 1";
         for (int i = 201; i <= 240; i++) {
             String db = "koss" + i;
             System.out.println(db);
@@ -138,7 +111,6 @@ public class KOSSTest1 {
                 long col02 = rs2.getLong(2);
                 long col03 = rs2.getLong(3);
                 System.out.println(col01 + " | " + col02 + " | " + col03);
-                resultIndex++;
                 Statement stateIds = connDB2.createStatement();
                 ResultSet ids = stateIds.executeQuery("select id from ManagedCompanySetting where userid = " + col01 + " and company_id = " + col02);
                 int idsInt = 0;
@@ -148,14 +120,14 @@ public class KOSSTest1 {
                     }
                     idsInt++;
                 }
+                resultIndex++;
                 ids.close();
                 stateIds.close();
             }
-            if (StringUtil.isNotNullOrEmpty(inSettingIds) && inSettingIds.endsWith(",")) {
-                System.out.println(inSettingIds);
-                inSettingIds = inSettingIds.substring(0, inSettingIds.length() - 1);
-                Statement deleteSTMT = connDB2.createStatement();
-                deleteSTMT.execute("delete from ManagedCompanySetting where id in (" + inSettingIds + ")");
+            if (StringUtil.isNotNullOrEmpty(inSettingIds)) {
+                String delSql = "delete from ManagedCompanySetting where id in (" + inSettingIds.substring(0, inSettingIds.length() - 1) + ")";
+                System.out.println(delSql);
+                connDB2.createStatement().execute(delSql);
             }
             System.out.println("---------------------------------------------");
             rs2.close();
