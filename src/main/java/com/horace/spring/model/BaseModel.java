@@ -23,9 +23,6 @@ public class BaseModel {
     }
 
     public void setCreateTime(Date createTime) {
-        if(createTime == null ){
-            createTime = new Date();
-        }
         this.createTime = createTime;
     }
 }
