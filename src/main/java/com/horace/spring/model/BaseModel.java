@@ -14,9 +14,6 @@ public class BaseModel {
     }
 
     public void setId(String id) {
-        if (StringUtil.isNullOrEmpty(id)) {
-            id = String.valueOf((new Date()).getTime());
-        }
         this.id = id;
     }
 }
