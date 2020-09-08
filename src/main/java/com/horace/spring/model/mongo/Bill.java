@@ -1,5 +1,6 @@
 package com.horace.spring.model.mongo;
 
+import com.horace.spring.model.BaseModel;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -8,21 +9,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 @Document(collection = "tb_bill") // 集合名
-public class Bill implements Serializable {
-    @Id
-    private String id;
+public class Bill extends BaseModel implements Serializable {
+
     private String title;
     private int total;
     @Field("start_date")
     private Date startDate;
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getTitle() {
         return title;
