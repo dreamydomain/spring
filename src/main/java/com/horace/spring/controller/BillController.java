@@ -7,6 +7,7 @@ import com.horace.spring.repository.BillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -16,15 +17,34 @@ public class BillController {
     @Autowired
     private BillRepository billRepository;
 
-    @RequestMapping("/getAllBills")
+    @GetMapping("/getAllBills")
     public ResponseDto getAllBills() {
         List<Bill> entity = this.billRepository.findAll();
         return new ResponseDto(entity, "", true, ErrorType.SUCCESS);
     }
 
+    @GetMapping("/FindById")
+    public ResponseDto FindById(@RequestParam String id) {
+        Bill bill = this.billRepository.findOneById(id);
+        return new ResponseDto(bill, "", true, ErrorType.SUCCESS);
+    }
+
     @PostMapping("/save")
     public ResponseDto save(@RequestBody Bill bill) {
+        bill.setCreateTime(new Date());
         this.billRepository.save(bill);
-        return new ResponseDto(bill, "", true, ErrorType.SUCCESS);
+        return new ResponseDto(bill, "保存成功！", true, ErrorType.SUCCESS);
+    }
+
+    @PostMapping("/update")
+    public ResponseDto update(@RequestBody Bill bill) {
+        this.billRepository.save(bill);
+        return new ResponseDto(bill, "更新成功！", true, ErrorType.SUCCESS);
+    }
+
+    @PostMapping("/delete")
+    public ResponseDto delete(@RequestBody String id) {
+        this.billRepository.deleteById(id);
+        return new ResponseDto(null, "删除成功！", true, ErrorType.SUCCESS);
     }
 }

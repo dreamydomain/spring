@@ -6,9 +6,14 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 import java.util.List;
 
 public interface BillRepository extends MongoRepository<Bill, String> {
+    Bill findOneById(String id);
+
     Bill findOneByTitle(String title);
 
     List<Bill> findAll();
 
     Bill save(Bill bill);
+
+    void deleteById(String id);
+
 }
