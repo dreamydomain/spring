@@ -16,6 +16,7 @@ public class Bill implements Serializable {
     @Id
     private String id; // MongoDB会自己生成ID
     private Date createTime;
+    private Date editTime;
     private String title;
     private int total;
     private String first;
@@ -39,6 +40,14 @@ public class Bill implements Serializable {
 
     public void setCreateTime(Date createTime) {
         this.createTime = createTime;
+    }
+
+    public Date getEditTime() {
+        return editTime;
+    }
+
+    public void setEditTime(Date editTime) {
+        this.editTime = editTime;
     }
 
     public String getTitle() {

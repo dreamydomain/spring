@@ -1,6 +1,7 @@
 package com.horace.spring.controller;
 
 import com.horace.spring.common.enums.ErrorType;
+import com.horace.spring.common.utils.StringUtil;
 import com.horace.spring.model.mongo.Bill;
 import com.horace.spring.model.mongo.ResponseDto;
 import com.horace.spring.repository.BillRepository;
@@ -31,15 +32,13 @@ public class BillController {
 
     @PostMapping("/save")
     public ResponseDto save(@RequestBody Bill bill) {
-        bill.setCreateTime(new Date());
+        if (StringUtil.isNullOrEmpty(bill.getId())) {
+            bill.setCreateTime(new Date());
+        } else {
+            bill.setEditTime(new Date());
+        }
         this.billRepository.save(bill);
         return new ResponseDto(bill, "保存成功！", true, ErrorType.SUCCESS);
-    }
-
-    @PostMapping("/update")
-    public ResponseDto update(@RequestBody Bill bill) {
-        this.billRepository.save(bill);
-        return new ResponseDto(bill, "更新成功！", true, ErrorType.SUCCESS);
     }
 
     @PostMapping("/delete")
