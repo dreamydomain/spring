@@ -7,7 +7,7 @@ import java.sql.Statement;
 
 public class KOSSTest1 {
     public static void main(String[] args) throws Exception {
-        testG1();
+        testG3();
     }
 
     private static void testG1() throws Exception {
