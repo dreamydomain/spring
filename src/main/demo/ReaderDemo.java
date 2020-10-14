@@ -6,7 +6,7 @@ public class ReaderDemo {
     public static void main(String[] args) throws IOException {
         File txtFile = new File("e:/a.txt");
         InputStream is = new FileInputStream(txtFile);
-        InputStreamReader reader = new InputStreamReader(is, "UTF-8");
+        InputStreamReader reader = new InputStreamReader(is, "GBK");
         BufferedReader bufferedReader = new BufferedReader(reader);
         String lineTxt;
         StringBuilder outString = new StringBuilder();
